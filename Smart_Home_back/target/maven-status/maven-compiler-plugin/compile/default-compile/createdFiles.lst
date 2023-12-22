@@ -1,0 +1,9 @@
+com\example\appareil\entity\Categorie.class
+com\example\appareil\cotroller\AppareilController.class
+com\example\appareil\entity\Appareil.class
+com\example\appareil\AppareilApplication.class
+com\example\appareil\repository\AppareilRepository.class
+com\example\appareil\service\AppareilService.class
+com\example\appareil\service\CategorieService.class
+com\example\appareil\cotroller\CategorieController.class
+com\example\appareil\repository\CategorieRepository.class

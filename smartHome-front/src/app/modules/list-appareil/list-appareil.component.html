@@ -1,0 +1,105 @@
+<div class="card  m-3 p-2">
+  <div class="flex flex-row justify-between items-center gap-2 p-2 bg-gray-100 mb-3 -mt-3 rounded-xl">
+    <a
+      class="inline-block cursor-pointer rounded border
+      border-indigo-600 px-12 py-3 text-sm font-medium text-indigo-600
+      hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring active:bg-indigo-500"
+      (click)="openSaveDialog()"
+    >
+      new
+    </a>
+
+    <div class="flex flex-row gap-2 flex-wrap">
+      <button
+        (click)="switch_on_or_off(true)"
+        class="bg-emerald-950 text-emerald-400 border border-emerald-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+        <span
+          class="bg-emerald-400 shadow-emerald-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+        Switch All On
+      </button>
+
+      <button
+        (click)="switch_on_or_off(false)"
+        class="bg-orange-950 text-orange-400 border border-orange-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group">
+        <span
+          class="bg-orange-400 shadow-orange-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+        Switch All Off
+      </button>
+    </div>
+  </div>
+
+  <div class="flex flex-row flex-wrap gap-3">
+    <div *ngFor="let appareil of appareils"
+         class="w-60"
+         [class]="appareil.state?'align-items-center bg-green-200 drop-shadow-xl rounded-sm p-2 ':'align-items-center bg-red-200 drop-shadow-sm rounded-sm p-2'">
+      <div class="overflow-x-hidden rounded-2xl relative">
+        <img class="h-40 rounded-xl w-full object-cover" [src]="appareil.photo" alt="{{ appareil.label }}">
+        <p-tag severity="info" class="absolute left-2 top-2 p-2 ">
+          <span class="pi pi-ticket text-sm ">
+            {{appareil.categorie && appareil.categorie.label}}
+          </span>
+        </p-tag>
+
+      </div>
+      <div class="mt-4 pl-2 mb-2 flex justify-between ">
+        <div>
+          <p class="text-sm font-bold text-gray-900 mb-0 uppercase">{{appareil.label}}</p>
+          <p class="text-sm text-gray-800 mt-0"> {{appareil.description}}</p>
+        </div>
+        <p-divider layout="vertical"></p-divider>
+        <div class="flex  justify-between  ">
+          <p-inputSwitch class="mt-2.5" [(ngModel)]="appareil.state"
+                         (onChange)="update(appareil)"></p-inputSwitch>
+          <button pButton icon="pi pi-trash " class="p-button-text text-red-600 bg-transparent -mt-1  "
+                  (click)="delete(appareil.id) "></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog header="Add Device" [(visible)]="displaySaveDialog" [modal]="true" [responsive]="true">
+  <div class="p-fluid">
+
+    <div class="p-field m-1">
+      <label for="label">Label</label>
+      <input id="label" pInputText [(ngModel)]="newAppareil.label"/>
+    </div>
+
+    <div class="p-field m-1">
+      <label for="label">description</label>
+      <input id="description" pInputText [(ngModel)]="newAppareil.description"/>
+    </div>
+
+    <div class="p-field m-1">
+      <label>Photo</label>
+      <p-fileUpload name="photo" url="your_upload_url" accept="image/*"
+                    (onSelect)="onFileSelect($event)"></p-fileUpload>
+    </div>
+
+
+    <div class="p-field m-1 flex justify-between">
+      <div class="p-field m-1">
+        <div class="p-field m-1">
+          <label for="category" class="mx-2">Category</label>
+          <select class="form-select " [compareWith]="compareWithIds" id="category" [(ngModel)]="newAppareil.categorie"
+                  name="category">
+            <option *ngFor="let category of categories" [ngValue]="category">{{ category.label }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex justify-between mt-1 mx-2">
+        <label class="mx-3 ">State</label>
+        <p-inputSwitch [(ngModel)]="newAppareil.state"></p-inputSwitch>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="p-dialog-footer">
+    <button pButton label="Save" class="p-button-success" (click)="save()"></button>
+    <button pButton label="Cancel" class="p-button-secondary" (click)="displaySaveDialog = false"></button>
+  </div>
+</p-dialog>
